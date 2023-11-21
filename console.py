@@ -128,12 +128,14 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[prams[0]]()
         prams = prams[1:]
         if prams:
+            sets = {}
             for i in prams:
                 key, val = i.split('=')
                 if key and val:
-                    setattr(new_instance, key, HBNBCommand.types[key](val))
+                    if type(eval(val)) is str:
+                        val = val.replace('_', ' ').replace('"', '')
+                    setattr(new_instance, key, val)
         # ------ End of Edited part ----------
-        storage.save()
         print(new_instance.id)
         storage.save()
 
