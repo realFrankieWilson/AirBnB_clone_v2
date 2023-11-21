@@ -27,7 +27,8 @@ class HBNBCommand(cmd.Cmd):
     types = {
              'number_rooms': int, 'number_bathrooms': int,
              'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
+             'latitude': float, 'longitude': float, 'name': str,
+             'city_id': str, 'user_id': str
             }
 
     def preloop(self):
@@ -118,10 +119,20 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        # -------- Edited part ------------
+        prams = args.split(' ')
+        if prams[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        
+        new_instance = HBNBCommand.classes[prams[0]]()
+        prams = prams[1:]
+        if prams:
+            for i in prams:
+                key, val = i.split('=')
+                if key and val:
+                    setattr(new_instance, key, HBNBCommand.types[key](val))
+        # ------ End of Edited part ----------
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -319,6 +330,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
