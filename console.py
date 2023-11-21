@@ -27,8 +27,7 @@ class HBNBCommand(cmd.Cmd):
     types = {
              'number_rooms': int, 'number_bathrooms': int,
              'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float, 'name': str,
-             'city_id': str, 'user_id': str
+             'latitude': float, 'longitude': float
             }
 
     def preloop(self):
@@ -116,28 +115,37 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
-            print("** class name missing **")
-            return
-        # -------- Edited part ------------
-        prams = args.split(' ')
-        if prams[0] not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
+        try:
+            if not args:
+                raise SyntaxError()
+            params = args.split(' ')
+            if params:
+                cls_name = params[0]
+            else:
+                raise SyntaxError()
 
-        new_instance = HBNBCommand.classes[prams[0]]()
-        prams = prams[1:]
-        if prams:
             sets = {}
-            for i in prams:
-                key, val = i.split('=')
-                if key and val:
-                    if type(eval(val)) is str:
-                        val = val.replace('_', ' ').replace('"', '')
-                    setattr(new_instance, key, val)
-        # ------ End of Edited part ----------
-        print(new_instance.id)
-        storage.save()
+
+            for s in params[1:]:
+                key, val = s.split('=')
+                if self.is_int(val):
+                    val = int(val)
+                elif self.is_float(val):
+                    val = float(val)
+                else:
+                    val = val.replace('_', ' ')
+                    val = val.strip('"\'')
+                sets[key] = val
+
+            inst = HBNBCommand.classes[cls_name](**sets)
+            storage.new(inst)
+            storage.save()
+            print(inst.id)
+
+        except SyntaxError:
+            print("** class name missing **")
+        except NameError:
+            print("** class doesn't exist **")
 
     def help_create(self):
         """ Help information for the create method """
@@ -332,6 +340,23 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
+    @staticmethod
+    def is_int(n):
+        """ checks if integer"""
+        try:
+            int(n)
+            return True
+        except ValueError:
+            return False
+
+    @staticmethod
+    def is_float(n):
+        try:
+            float(n)
+            return True
+        except ValueError:
+            return False
 
 
 if __name__ == "__main__":
