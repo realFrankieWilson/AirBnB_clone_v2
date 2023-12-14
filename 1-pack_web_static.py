@@ -3,9 +3,9 @@
 A script that generates a .tgz archive from from the contents of a web.
 """
 
-import os
 from fabric.api import local
-import datetime
+from time import strftime
+from datetime import date
 
 
 def do_pack():
