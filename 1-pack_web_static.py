@@ -9,13 +9,14 @@ from datetime import date
 
 
 def do_pack():
-    today = datetime.datetime.now()
-    time_format = today.strftime("%Y%m%d%H%M%S")
-    web_version = f'version/web_static{time_format}.tgz'
+    """ Generates achive contents of web_static folder """
 
+    today = strftime("%Y%m%d%H%M%S")
     try:
         local("mkdir -p versions")
-        local(f'tar -cvzf {web_version} web_static')
-        return web_version
+        local("tar -czvf versions/web_static_{}.tgz web_static/".format(
+            today)
+            )
+        return "version/web_static_{}.tgz".format(today)
     except Exception as e:
         return None
