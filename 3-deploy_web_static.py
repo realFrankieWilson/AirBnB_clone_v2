@@ -66,5 +66,4 @@ def deploy():
     if not os.path.exists(main):
         return False
 
-    sub = do_deploy(main)
-    return sub
+    return do_deploy(main)
