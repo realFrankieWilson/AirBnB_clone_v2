@@ -69,8 +69,8 @@ def num_int_template(n):
         Web listens 0.0.0.0, port 5000
         /number: -> Displays an integer from template.
     '''
-    return render_template('5-number.html', n=n)
+    return render_template("5-number.html", n=n)
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000
+    app.run(host='0.0.0.0', port=5000)
