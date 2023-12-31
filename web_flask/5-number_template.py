@@ -2,7 +2,7 @@
 """
 A module that contains functions that starts application
 """
-from flask import Flask, escape, render_template
+from flask import Flask, render_template, escape
 
 
 # Create an instance of Flask class.
