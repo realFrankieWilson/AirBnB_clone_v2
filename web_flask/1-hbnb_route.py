@@ -17,7 +17,7 @@ def hello():
         Routs: -> display "Hello HBNB!"
         /hbnb: -> display "HBNB"
     '''
-    return "HBNB!"
+    return "HBNB"
 
 
 if __name__ == "__main__":
