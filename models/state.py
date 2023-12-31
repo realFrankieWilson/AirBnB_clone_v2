@@ -19,8 +19,6 @@ class State(BaseModel, Base):
     @property
     def cities(self):
         var = models.storage.all()
-        return [v for k, v in var.items() if v.state_id == self.id]
-    """
         lista = []
         result = []
         for key in var:
@@ -32,4 +30,3 @@ class State(BaseModel, Base):
             if (elem.state_id == self.id):
                 result.append(elem)
         return (result)
-        """
