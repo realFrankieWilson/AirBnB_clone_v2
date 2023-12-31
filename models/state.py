@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, DateTime, Integer
 from sqlalchemy.orm import relationship
+from sqlalchemy.ext.declarative import declarative_base
 import models
 from models.city import City
 import shlex
@@ -18,6 +19,8 @@ class State(BaseModel, Base):
     @property
     def cities(self):
         var = models.storage.all()
+        return [v for k, v in var.items() if v.state_id == self.id]
+    """
         lista = []
         result = []
         for key in var:
@@ -29,3 +32,4 @@ class State(BaseModel, Base):
             if (elem.state_id == self.id):
                 result.append(elem)
         return (result)
+        """
