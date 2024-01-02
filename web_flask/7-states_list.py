@@ -22,14 +22,14 @@ def close_sess(error):
 
 
 @app.route("/states_list")
-def display_state(n):
+def display_state():
     '''
     Starts a Flask web application:
         Web listens 0.0.0.0, port 5000
         /number: -> Displays states.
     '''
     states = storage.all(State).values()
-    return render_template('7-states_list.html', state=states)
+    return render_template('7-states_list.html', states=states)
 
 
 if __name__ == "__main__":

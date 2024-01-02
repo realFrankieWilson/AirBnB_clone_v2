@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ db_storage module """
 from os import getenv
-from sqlalchemy import create_engine
+from sqlalchemy import (create_engine)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
@@ -68,8 +68,9 @@ class DBStorage:
     def reload(self):
         """ create database session """
         Base.metadata.create_all(self.__engine)
-        session = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        self.__session = scoped_session(session)
+        smaker = sessionmake(bind=self.__engin, expire_on_commit=False)
+        Session = scoped_session(smaker)
+        self.__session = Session()
 
     def close(self):
         """ close scoped session """
