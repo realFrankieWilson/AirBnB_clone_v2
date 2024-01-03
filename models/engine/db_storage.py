@@ -10,7 +10,7 @@ import models
 from models.amenity import Amenity
 from models.base_model import BaseModel, Base
 import sqlalchemy
-from sqlalchemy import create_engine
+from sqlalchemy import (create_engine)
 from sqlalchemy.orm import scoped_session, sessionmaker
 from models.city import City
 from models.state import State
@@ -35,11 +35,12 @@ class DBStorage:
         HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST')
         HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
         HBNB_ENV = getenv('HBNB_ENV')
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
-                                      format(HBNB_MYSQL_USER,
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
+                                      .format(HBNB_MYSQL_USER,
                                              HBNB_MYSQL_PWD,
                                              HBNB_MYSQL_HOST,
-                                             HBNB_MYSQL_DB))
+                                             HBNB_MYSQL_DB),
+                                             pool_pre_ping=True)
         if HBNB_ENV == "test":
             Base.metadata.drop_all(self.__engine)
 
@@ -79,7 +80,7 @@ class DBStorage:
         established_session = sessionmaker(bind=self.__engine,
                                            expire_on_commit=False)
         Session = scoped_session(established_session)
-        self.__session = Session
+        self.__session = Session()
 
     def close(self):
         """ A method that calls the remove the data in __session"""

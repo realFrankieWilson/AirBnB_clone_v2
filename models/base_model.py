@@ -4,7 +4,7 @@
     other subclass that inherits from it.
 """
 from sqlalchemy import Column, String, DateTime
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 import uuid
 from datetime import datetime
 import sqlalchemy
@@ -12,13 +12,14 @@ import models
 from os import getenv
 
 
+Base = sqlalchemy.orm.declarative_base()
 time_utc_format = "%Y-%m-%dT%H:%M:%S.%f"
-
+'''
 if models.if_database == "db":
     Base = declarative_base()
 else:
     Base = object
-
+'''
 
 class BaseModel:
     """
@@ -26,9 +27,9 @@ class BaseModel:
         created and modified.
     """
     if models.if_database == "db":
-        id = Column(String(60), primary_key=True)
-        created_at = Column(DateTime, default=datetime.utcnow)
-        updated_at = Column(DateTime, default=datetime.utcnow)
+        id = Column(String(60), nullable=False, primary_key=True)
+        created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+        updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
 
     def __init__(self, *args, **kwargs):
         """
@@ -57,7 +58,10 @@ class BaseModel:
         """ A method that displays given content in the specified format"""
         return "[{:s}] ({:s}) {}".format(self.__class__.__name__, self.id,
                                          self.__dict__)
-
+    def __repr__(self):
+        """ Returns a formated string """
+        return self.__str__()
+    
     def save(self):
         """A method that saves the outlined object created"""
         self.updated_at = datetime.utcnow()
@@ -75,8 +79,6 @@ class BaseModel:
         if "updated_at" in hash_map:
             hash_map["updated_at"] = hash_map["updated_at"].strftime(time_utc_format)
         hash_map["__class__"] = self.__class__.__name__
-        if "_sa_instance_state" in hash_map:
-            del hash_map["_sa_instance_state"]
         return hash_map
 
     def delete(self):

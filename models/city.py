@@ -15,9 +15,11 @@ class City(BaseModel, Base):
     """
     if models.if_database == "db":
         __tablename__ = 'cities'
-        state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
+        __table_args__ = ({'mysql_default_charset': 'latin1'})
         name = Column(String(128), nullable=False)
-        places = relationship("Place", backref="cities")
+        state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
+        places = relationship("Place", cascade='all, delete, delete-orphan',
+                              backref="cities")
     else:
         state_id = ""
         name = ""

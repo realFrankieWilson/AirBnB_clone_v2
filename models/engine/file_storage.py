@@ -31,8 +31,8 @@ class FileStorage:
         if cls is not None:
             hash_map = {}
             for key_data, data_value in self.__objects.items():
-                if cls == data_value.__class__ or
-                cls == data_value.__class__.__name__:
+                if cls == data_value.__class__ or\
+                        cls == data_value.__class__.__name__:
                     hash_map[key_data] = data_value
             return hash_map
         return self.__objects
@@ -59,8 +59,8 @@ class FileStorage:
             with open(self.__file_path, 'r') as file:
                 cnt = json.load(file)
             for key_data in cnt:
-                self.__objects[key_data] =
-                classes[cnt[key_data]["__class__"]](**cnt[key_data])
+                self.__objects[key_data] =\
+                        classes[cnt[key_data]["__class__"]](**cnt[key_data])
         except:
             pass
 
