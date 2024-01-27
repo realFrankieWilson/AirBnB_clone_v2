@@ -1,0 +1,7 @@
+# Web Server Gateway interface.
+new_app = __import__('0-hello_route')
+
+app = new_app.app
+
+if __name__ == '__main__':
+    app.run()
